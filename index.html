@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student LMS - ඉගෙනුම් කළමනාකරණ පද්ධතිය</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #06b6d4;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --shadow: 0 10px 40px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans Sinhala', 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--gray);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.5);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+            max-width: 450px;
+            margin: 0 auto;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .card-subtitle {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .input-icon input {
+            padding-left: 48px;
+        }
+
+        .btn-full {
+            width: 100%;
+            justify-content: center;
+            padding: 14px;
+        }
+
+        .alert {
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: var(--danger);
+            border: 1px solid #fecaca;
+        }
+
+        .alert-success {
+            background: #ecfdf5;
+            color: var(--success);
+            border: 1px solid #a7f3d0;
+        }
+
+        .alert.show {
+            display: flex;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        /* Features Grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .feature-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard-header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .user-details h2 {
+            font-size: 1.3rem;
+            color: var(--dark);
+        }
+
+        .user-details span {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-card h4 {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Table */
+        .table-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            overflow-x: auto;
+        }
+
+        .table-container h3 {
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: var(--gray);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-header h3 {
+            font-size: 1.4rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: #f1f5f9;
+            color: var(--danger);
+        }
+
+        /* Page Sections */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255,255,255,0.7);
+            margin-top: 40px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .navbar { flex-direction: column; gap: 15px; }
+            .card { padding: 25px; }
+            .dashboard-header { flex-direction: column; gap: 15px; text-align: center; }
+        }
+
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden { display: none !important; }
+    </style>
+<base target="_blank">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Student LMS</span>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="#" onclick="showPage('home')">මුල් පිටුව</a>
+                <a href="#" onclick="showPage('courses')">පාඨමාලා</a>
+                <a href="#" onclick="showPage('about')">අප ගැන</a>
+                <button class="btn btn-primary" id="loginBtn" onclick="showPage('login')">
+                    <i class="fas fa-sign-in-alt"></i> LOG IN
+                </button>
+                <button class="btn btn-danger hidden" id="logoutBtn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> ඉවත් වන්න
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- HOME PAGE -->
+    <div id="page-home" class="page active">
+        <div class="container">
+            <div class="hero">
+                <h1>ඉගෙනුම් කළමනාකරණ පද්ධතිය</h1>
+                <p>ඔබගේ අධ්‍යාපනික ගමන සාර්ථක කර ගන්න. අපගේ LMS පද්ධතිය ඔබගේ සියලු අධ්‍යාපනික අවශ්‍යතා එකම ස්ථානයකින් සපුරාලයි.</p>
+                <button class="btn btn-primary" style="font-size: 1.1rem; padding: 16px 40px;" onclick="showPage('login')">
+                    <i class="fas fa-sign-in-alt"></i> LOG IN කරන්න
+                </button>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-book-open"></i></div>
+                    <h3>පාඨමාලා කළමනාකරණය</h3>
+                    <p>ඔබගේ සියලු පාඨමාලා එකම ස්ථානයකින් කළමනාකරණය කරන්න</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>ප්‍රගති නිරීක්ෂණය</h3>
+                    <p>ඔබගේ අධ්‍යයන ප්‍රගතිය නිරන්තරයෙන් නිරීක්ෂණය කරන්න</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-users"></i></div>
+                    <h3>සම්ප්‍රදායික ඉගෙනුම</h3>
+                    <p>අන්‍යෝන්‍ය සහයෝගයෙන් ඉගෙනුම වඩාත් සාර්ථක කරගන්න</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-certificate"></i></div>
+                    <h3>සහතිකපත්</h3>
+                    <p>ඔබගේ ජයග්‍රහණ සහතික කර ගන්න</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STUDENT LOGIN PAGE -->
+    <div id="page-login" class="page">
+        <div class="container" style="padding-top: 40px;">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-user-graduate" style="color: var(--primary); font-size: 3rem; display: block; margin-bottom: 15px;"></i>
+                    Student Login
+                </div>
+                <div class="card-subtitle">ඔබගේ ගිණුමට පිවිසෙන්න</div>
+
+                <div class="alert alert-error" id="loginError">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="loginErrorText"></span>
+                </div>
+
+                <form id="studentLoginForm" onsubmit="handleStudentLogin(event)">
+                    <div class="form-group">
+                        <label>Email ලිපිනය</label>
+                        <div class="input-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="studentEmail" placeholder="you@example.com" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>මුරපදය</label>
+                        <div class="input-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="studentPassword" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full" id="loginSubmitBtn">
+                        <i class="fas fa-sign-in-alt"></i> LOG IN
+                    </button>
+                </form>
+
+                <div style="text-align: center; margin-top: 20px; color: var(--gray); font-size: 0.9rem;">
+                    <p>ගිණුමක් නැද්ද? <strong>ඔබගේ විස්තර admin වෙත සම්බන්ධ කරගන්න.</strong></p>
+                    <p style="margin-top: 10px; font-size: 0.8rem;">Student ලා register වීමට admin අවසරය අවශ්‍යයි.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN LOGIN PAGE -->
+    <div id="page-admin-login" class="page">
+        <div class="container" style="padding-top: 40px;">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-shield-alt" style="color: var(--danger); font-size: 3rem; display: block; margin-bottom: 15px;"></i>
+                    Admin Login
+                </div>
+                <div class="card-subtitle">පරිපාලක පිටුවට පිවිසෙන්න</div>
+
+                <div class="alert alert-error" id="adminLoginError">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="adminLoginErrorText"></span>
+                </div>
+
+                <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+                    <div class="form-group">
+                        <label>Admin Email</label>
+                        <div class="input-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="adminEmail" placeholder="admin@example.com" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>මුරපදය</label>
+                        <div class="input-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="adminPassword" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-danger btn-full">
+                        <i class="fas fa-sign-in-alt"></i> Admin Log In
+                    </button>
+                </form>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="#" onclick="showPage('home')" style="color: var(--gray); text-decoration: none; font-size: 0.9rem;">
+                        <i class="fas fa-arrow-left"></i> මුල් පිටුවට ආපසු යන්න
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STUDENT DASHBOARD -->
+    <div id="page-student-dashboard" class="page dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <div class="user-info">
+                    <div class="user-avatar" id="studentAvatar">S</div>
+                    <div class="user-details">
+                        <h2 id="studentName">Student Name</h2>
+                        <span id="studentEmailDisplay">student@example.com</span>
+                    </div>
+                </div>
+                <div>
+                    <span class="badge badge-success">Student</span>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>මුළු පාඨමාලා</h4>
+                    <div class="stat-value">5</div>
+                </div>
+                <div class="stat-card">
+                    <h4>සම්පූර්ණ කළ</h4>
+                    <div class="stat-value">2</div>
+                </div>
+                <div class="stat-card">
+                    <h4>ප්‍රගති ප්‍රතිශතය</h4>
+                    <div class="stat-value">75%</div>
+                </div>
+                <div class="stat-card">
+                    <h4>සහතිකපත්</h4>
+                    <div class="stat-value">1</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <h3><i class="fas fa-book"></i> මගේ පාඨමාලා</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>පාඨමාලාව</th>
+                            <th>විෂය</th>
+                            <th>ස්ථිතිය</th>
+                            <th>ප්‍රගතිය</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Python Programming</strong></td>
+                            <td>Programming</td>
+                            <td><span class="badge badge-success">සක්‍රීය</span></td>
+                            <td>80%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Web Development</strong></td>
+                            <td>Development</td>
+                            <td><span class="badge badge-success">සක්‍රීය</span></td>
+                            <td>60%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Database Design</strong></td>
+                            <td>Database</td>
+                            <td><span class="badge badge-warning">නිමාණය වෙමින්</span></td>
+                            <td>30%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>UI/UX Design</strong></td>
+                            <td>Design</td>
+                            <td><span class="badge badge-success">සක්‍රීය</span></td>
+                            <td>45%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mobile App Dev</strong></td>
+                            <td>Mobile</td>
+                            <td><span class="badge badge-warning">නිමාණය වෙමින්</span></td>
+                            <td>10%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD -->
+    <div id="page-admin-dashboard" class="page dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <div class="user-info">
+                    <div class="user-avatar" style="background: linear-gradient(135deg, var(--danger), #f97316);">A</div>
+                    <div class="user-details">
+                        <h2>පරිපාලක පුද්ගලයා</h2>
+                        <span>test@gmail.com</span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <span class="badge badge-success">Admin</span>
+                    <button class="btn btn-primary" onclick="openModal()">
+                        <i class="fas fa-user-plus"></i> Student එකතු කරන්න
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>මුළු Student ලා</h4>
+                    <div class="stat-value" id="totalStudents">0</div>
+                </div>
+                <div class="stat-card">
+                    <h4>සක්‍රීය Student ලා</h4>
+                    <div class="stat-value" id="activeStudents">0</div>
+                </div>
+                <div class="stat-card">
+                    <h4>මුළු පාඨමාලා</h4>
+                    <div class="stat-value">5</div>
+                </div>
+                <div class="stat-card">
+                    <h4>අද Registrations</h4>
+                    <div class="stat-value" id="todayRegistrations">0</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <h3><i class="fas fa-users"></i> Registered Student ලා</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>නම</th>
+                            <th>Email</th>
+                            <th>දුරකථන</th>
+                            <th>ලියාපදිංචි දිනය</th>
+                            <th>ක්‍රියා</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTableBody">
+                        <!-- Dynamic content -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABOUT PAGE -->
+    <div id="page-about" class="page">
+        <div class="container">
+            <div class="hero">
+                <h1>අප ගැන</h1>
+                <p>Student LMS යනු ශ්‍රී ලංකාවේ සිසුන් සඳහා සකස් කරන ලද නවීන ඉගෙනුම් කළමනාකරණ පද්ධතියකි.</p>
+            </div>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-bullseye"></i></div>
+                    <h3>අපගේ දැක්ම</h3>
+                    <p>සියලුම සිසුන්ට ගුණාත්මක අධ්‍යාපනය ලබාදීම</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-heart"></i></div>
+                    <h3>අපගේ මෙහෙවර</h3>
+                    <p>තාක්ෂණය භාවිතයෙන් අධ්‍යාපනය ප්‍රවේශය සහ සාර්ථකත්වය වැඩි කිරීම</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- COURSES PAGE -->
+    <div id="page-courses" class="page">
+        <div class="container">
+            <div class="hero">
+                <h1>පාඨමාලා</h1>
+                <p>අපගේ තෝරාගත් පාඨමාලා පරීක්ෂා කරන්න</p>
+            </div>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fab fa-python"></i></div>
+                    <h3>Python Programming</h3>
+                    <p>මූලික සිට උසස් මට්ටම දක්වා Python ඉගෙනගන්න</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-code"></i></div>
+                    <h3>Web Development</h3>
+                    <p>HTML, CSS, JavaScript සහ modern frameworks</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-database"></i></div>
+                    <h3>Database Design</h3>
+                    <p>SQL සහ NoSQL database කළමනාකරණය</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <h3>Mobile App Development</h3>
+                    <p>React Native සහ Flutter භාවිතයෙන්</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD STUDENT MODAL -->
+    <div class="modal-overlay" id="addStudentModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus"></i> නව Student එකතු කරන්න</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+
+            <div class="alert alert-error" id="addStudentError">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="addStudentErrorText"></span>
+            </div>
+
+            <div class="alert alert-success" id="addStudentSuccess">
+                <i class="fas fa-check-circle"></i>
+                <span>Student සාර්ථකව එකතු කරන ලදී!</span>
+            </div>
+
+            <form id="addStudentForm" onsubmit="handleAddStudent(event)">
+                <div class="form-group">
+                    <label>සම්පූර්ණ නම *</label>
+                    <div class="input-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="newStudentName" placeholder="සම්පූර්ණ නම" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email ලිපිනය *</label>
+                    <div class="input-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="newStudentEmail" placeholder="student@example.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>මුරපදය *</label>
+                    <div class="input-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="newStudentPassword" placeholder="මුරපදයක් සකසන්න" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>දුරකථන අංකය</label>
+                    <div class="input-icon">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" id="newStudentPhone" placeholder="07X XXX XXXX">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>පාඨමාලාව</label>
+                    <select id="newStudentCourse">
+                        <option value="">පාඨමාලාවක් තෝරන්න</option>
+                        <option value="Python Programming">Python Programming</option>
+                        <option value="Web Development">Web Development</option>
+                        <option value="Database Design">Database Design</option>
+                        <option value="UI/UX Design">UI/UX Design</option>
+                        <option value="Mobile App Dev">Mobile App Development</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success btn-full">
+                    <i class="fas fa-save"></i> Student එකතු කරන්න
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2026 Student LMS. සියලු හිමිකම් ඇවිරිණි.</p>
+    </div>
+
+    <script>
+        // ==================== DATA STORAGE ====================
+        const STORAGE_KEYS = {
+            STUDENTS: 'lms_students',
+            CURRENT_USER: 'lms_current_user',
+            ADMIN_LOGGED: 'lms_admin_logged'
+        };
+
+        // Initialize default data
+        function initData() {
+            if (!localStorage.getItem(STORAGE_KEYS.STUDENTS)) {
+                const defaultStudents = [
+                    {
+                        id: 1,
+                        name: 'Kamal Perera',
+                        email: 'kamal@example.com',
+                        password: 'student123',
+                        phone: '0712345678',
+                        course: 'Python Programming',
+                        registeredDate: new Date().toISOString(),
+                        status: 'active'
+                    },
+                    {
+                        id: 2,
+                        name: 'Nimal Silva',
+                        email: 'nimal@example.com',
+                        password: 'student123',
+                        phone: '0723456789',
+                        course: 'Web Development',
+                        registeredDate: new Date().toISOString(),
+                        status: 'active'
+                    }
+                ];
+                localStorage.setItem(STORAGE_KEYS.STUDENTS, JSON.stringify(defaultStudents));
+            }
+        }
+
+        function getStudents() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEYS.STUDENTS)) || [];
+        }
+
+        function saveStudents(students) {
+            localStorage.setItem(STORAGE_KEYS.STUDENTS, JSON.stringify(students));
+        }
+
+        function getCurrentUser() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER));
+        }
+
+        function setCurrentUser(user) {
+            localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
+        }
+
+        function isAdminLogged() {
+            return localStorage.getItem(STORAGE_KEYS.ADMIN_LOGGED) === 'true';
+        }
+
+        function setAdminLogged(value) {
+            localStorage.setItem(STORAGE_KEYS.ADMIN_LOGGED, value ? 'true' : 'false');
+        }
+
+        // ==================== ROUTING ====================
+        function showPage(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+            // Show requested page
+            const page = document.getElementById('page-' + pageName);
+            if (page) page.classList.add('active');
+
+            // Update nav
+            updateNav();
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function updateNav() {
+            const currentUser = getCurrentUser();
+            const adminLogged = isAdminLogged();
+            const loginBtn = document.getElementById('loginBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            if (currentUser || adminLogged) {
+                loginBtn.classList.add('hidden');
+                logoutBtn.classList.remove('hidden');
+            } else {
+                loginBtn.classList.remove('hidden');
+                logoutBtn.classList.add('hidden');
+            }
+        }
+
+        // ==================== AUTH ====================
+        function handleStudentLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('studentEmail').value.trim();
+            const password = document.getElementById('studentPassword').value;
+            const errorDiv = document.getElementById('loginError');
+            const errorText = document.getElementById('loginErrorText');
+
+            const students = getStudents();
+            const student = students.find(s => s.email === email && s.password === password);
+
+            if (student) {
+                setCurrentUser({
+                    id: student.id,
+                    name: student.name,
+                    email: student.email,
+                    role: 'student'
+                });
+                errorDiv.classList.remove('show');
+                showStudentDashboard();
+            } else {
+                errorText.textContent = 'වැරදි email හෝ මුරපදය. නැවත උත්සාහ කරන්න.';
+                errorDiv.classList.add('show');
+            }
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            const errorDiv = document.getElementById('adminLoginError');
+            const errorText = document.getElementById('adminLoginErrorText');
+
+            // Admin credentials
+            if (email === 'test@gmail.com' && password === '123') {
+                setAdminLogged(true);
+                errorDiv.classList.remove('show');
+                showAdminDashboard();
+            } else {
+                errorText.textContent = 'වැරදි admin credentials. නැවත උත්සාහ කරන්න.';
+                errorDiv.classList.add('show');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+            localStorage.removeItem(STORAGE_KEYS.ADMIN_LOGGED);
+            updateNav();
+            showPage('home');
+        }
+
+        // ==================== DASHBOARDS ====================
+        function showStudentDashboard() {
+            const user = getCurrentUser();
+            if (!user) return;
+
+            document.getElementById('studentName').textContent = user.name;
+            document.getElementById('studentEmailDisplay').textContent = user.email;
+            document.getElementById('studentAvatar').textContent = user.name.charAt(0).toUpperCase();
+
+            showPage('student-dashboard');
+        }
+
+        function showAdminDashboard() {
+            if (!isAdminLogged()) return;
+
+            updateAdminStats();
+            renderStudentsTable();
+            showPage('admin-dashboard');
+        }
+
+        function updateAdminStats() {
+            const students = getStudents();
+            const today = new Date().toDateString();
+            const todayCount = students.filter(s => new Date(s.registeredDate).toDateString() === today).length;
+
+            document.getElementById('totalStudents').textContent = students.length;
+            document.getElementById('activeStudents').textContent = students.filter(s => s.status === 'active').length;
+            document.getElementById('todayRegistrations').textContent = todayCount;
+        }
+
+        function renderStudentsTable() {
+            const students = getStudents();
+            const tbody = document.getElementById('studentsTableBody');
+
+            if (students.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--gray);">Student ලා නැත. එකතු කරන්න.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = students.map(student => `
+                <tr>
+                    <td>#${student.id}</td>
+                    <td><strong>${student.name}</strong></td>
+                    <td>${student.email}</td>
+                    <td>${student.phone || '-'}</td>
+                    <td>${new Date(student.registeredDate).toLocaleDateString('si-LK')}</td>
+                    <td>
+                        <button class="btn btn-danger" style="padding: 6px 14px; font-size: 0.8rem;" onclick="deleteStudent(${student.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ==================== STUDENT MANAGEMENT ====================
+        function openModal() {
+            document.getElementById('addStudentModal').classList.add('show');
+            document.getElementById('addStudentForm').reset();
+            document.getElementById('addStudentError').classList.remove('show');
+            document.getElementById('addStudentSuccess').classList.remove('show');
+        }
+
+        function closeModal() {
+            document.getElementById('addStudentModal').classList.remove('show');
+        }
+
+        function handleAddStudent(e) {
+            e.preventDefault();
+            const name = document.getElementById('newStudentName').value.trim();
+            const email = document.getElementById('newStudentEmail').value.trim();
+            const password = document.getElementById('newStudentPassword').value;
+            const phone = document.getElementById('newStudentPhone').value.trim();
+            const course = document.getElementById('newStudentCourse').value;
+
+            const errorDiv = document.getElementById('addStudentError');
+            const errorText = document.getElementById('addStudentErrorText');
+            const successDiv = document.getElementById('addStudentSuccess');
+
+            // Validation
+            if (!name || !email || !password) {
+                errorText.textContent = 'සියලු අනිවාර්ය ක්ෂේත්‍ර පුරවන්න.';
+                errorDiv.classList.add('show');
+                successDiv.classList.remove('show');
+                return;
+            }
+
+            const students = getStudents();
+            if (students.find(s => s.email === email)) {
+                errorText.textContent = 'මෙම email ලිපිනය දැනටමත් භාවිතා වී ඇත.';
+                errorDiv.classList.add('show');
+                successDiv.classList.remove('show');
+                return;
+            }
+
+            const newStudent = {
+                id: Date.now(),
+                name: name,
+                email: email,
+                password: password,
+                phone: phone,
+                course: course,
+                registeredDate: new Date().toISOString(),
+                status: 'active'
+            };
+
+            students.push(newStudent);
+            saveStudents(students);
+
+            errorDiv.classList.remove('show');
+            successDiv.classList.add('show');
+
+            updateAdminStats();
+            renderStudentsTable();
+
+            setTimeout(() => {
+                closeModal();
+            }, 1500);
+        }
+
+        function deleteStudent(id) {
+            if (!confirm('මෙම student ඉවත් කිරීමට ඔබට විශ්වාසද?')) return;
+
+            let students = getStudents();
+            students = students.filter(s => s.id !== id);
+            saveStudents(students);
+
+            updateAdminStats();
+            renderStudentsTable();
+        }
+
+        // ==================== URL ROUTING (Admin Link) ====================
+        function checkUrlRoute() {
+            const hash = window.location.hash;
+            const path = window.location.pathname;
+
+            // Check for /admin in URL path or #admin in hash
+            if (path.includes('/admin') || hash === '#admin') {
+                showPage('admin-login');
+                return true;
+            }
+
+            // Check if already logged in
+            if (isAdminLogged()) {
+                showAdminDashboard();
+                return true;
+            }
+
+            if (getCurrentUser()) {
+                showStudentDashboard();
+                return true;
+            }
+
+            return false;
+        }
+
+        // ==================== INIT ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            initData();
+
+            if (!checkUrlRoute()) {
+                showPage('home');
+            }
+
+            updateNav();
+        });
+
+        // Handle hash changes
+        window.addEventListener('hashchange', function() {
+            if (window.location.hash === '#admin') {
+                showPage('admin-login');
+            }
+        });
+
+        // Close modal on overlay click
+        document.getElementById('addStudentModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+</body>
+</html>
